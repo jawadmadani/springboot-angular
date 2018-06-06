@@ -2,11 +2,14 @@ package com.globalmatics.bike.controllers;
 
 import com.globalmatics.bike.models.Bike;
 import com.globalmatics.bike.repository.BikeRepository;
+import com.globalmatics.bike.service.BikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -14,22 +17,21 @@ import java.util.List;
 public class BikesController {
 
     @Autowired
-    private BikeRepository bikeRepository;
+    private BikeService bikeService;
 
 
 
     // API endpoints for getting the full list.
     @GetMapping("/all")
-    public List<Bike> bikeList() {
-        List<Bike> bikes = new ArrayList<>();
-        return bikes;
-    }
+    public ResponseEntity<List<Bike>> bikeList2() {
+        List<Bike> listOfBikes = bikeService.fetchAll();
 
-    // OR //
+        HttpStatus httpStatus = HttpStatus.OK;
 
-    @GetMapping("/all2")
-    public List<Bike> bikeList2() {
-        return bikeRepository.findAll();
+        if (listOfBikes.size() == 0) {
+            httpStatus = HttpStatus.NO_CONTENT;
+        }
+        return new ResponseEntity<>(listOfBikes, httpStatus);
     }
 
 
@@ -37,10 +39,10 @@ public class BikesController {
 
     // API for adding a bike.
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody Bike thisBike) {
 
-        bikeRepository.save(thisBike);
+        bikeService.persist(thisBike);
     }
 
 
@@ -51,6 +53,6 @@ public class BikesController {
     @GetMapping("/{id}")
     public Bike getCertain(@PathVariable("id") long id) {
 
-        return bikeRepository.getOne(id);
+        return bikeService.fetch(id);
     }
 }

@@ -25,5 +25,5 @@
 /.nb-gradle/
 
 .DS_Store
-
+.mvn/wrapper
 .metadata

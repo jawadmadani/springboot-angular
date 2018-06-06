@@ -23,7 +23,7 @@ public class BikesController {
 
     // API endpoints for getting the full list.
     @GetMapping("/all")
-    public ResponseEntity<List<Bike>> bikeList2() {
+    public ResponseEntity<List<Bike>> bikeList() {
         List<Bike> listOfBikes = bikeService.fetchAll();
 
         HttpStatus httpStatus = HttpStatus.OK;

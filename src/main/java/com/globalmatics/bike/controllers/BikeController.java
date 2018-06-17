@@ -2,6 +2,7 @@ package com.globalmatics.bike.controllers;
 
 import com.globalmatics.bike.models.Bike;
 import com.globalmatics.bike.service.BikeService;
+import org.hibernate.sql.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/bikes")
-public class BikesController {
+public class BikeController {
 
     @Autowired
     private BikeService bikeService;
@@ -33,23 +34,41 @@ public class BikesController {
 
 
 
+    // API for getting a certain bike.
+    @GetMapping("/{id}")
+    public Bike getCertain(@PathVariable("id") Long id) {
+
+        return bikeService.fetch(id);
+    }
+
 
     // API for adding a bike.
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody Bike thisBike) {
+    public Bike create(@RequestBody Bike thisBike) {
 
-        bikeService.persist(thisBike);
+        Bike newBike = bikeService.persist(thisBike);
+
+        return newBike;
     }
 
 
+//    API for deleting a bike
+    @RequestMapping(path = "/{name}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable("name") String name) {
 
-
-
-    // API for getting a certain bike.
-    @GetMapping("/{id}")
-    public Bike getCertain(@PathVariable("id") long id) {
-
-        return bikeService.fetch(id);
+        bikeService.delete(name);
     }
+
+
+//    API for updating an entity
+    @RequestMapping(path = "/update/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public Bike update(@PathVariable("id") Long id, @RequestBody Bike thisBike) {
+
+        return bikeService.update(id, thisBike);
+    }
+
+
 }

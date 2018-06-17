@@ -17,9 +17,11 @@ public class BikeService {
         return bikeRepository.findAll();
     }
 
-    public void persist(Bike bike) {
+    public Bike persist(Bike thisBike) {
 
-        bikeRepository.save(bike);
+        Bike bike = bikeRepository.save(thisBike);
+
+        return bike;
 
     }
 
@@ -27,4 +29,14 @@ public class BikeService {
         return bikeRepository.findById(id).get();
     }
 
+    public void delete(String name) {
+        bikeRepository.deleteByName(name);
+    }
+
+
+    public Bike update(Long id, Bike thisBike) {
+
+
+        return bikeRepository.save(thisBike);
+    }
 }

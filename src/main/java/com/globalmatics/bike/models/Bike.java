@@ -1,17 +1,15 @@
 package com.globalmatics.bike.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 
 @Entity
-@Table(name = "Bikes")
-@Getter
-@Setter
+@Table(name = "Bike")
+@Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Bike {
     @Id
@@ -27,4 +25,5 @@ public class Bike {
     private Date purchaseDate;
     private boolean contact;
 
+    private Bike() {}
 }

@@ -65,9 +65,9 @@ public class BikeController {
 //    API for updating an entity
     @RequestMapping(path = "/update/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public Bike update(@PathVariable("id") Long id, @RequestBody Bike thisBike) {
+    public Bike update(@PathVariable("id") String name, @RequestBody Bike thisBike) {
 
-        return bikeService.update(id, thisBike);
+        return bikeService.update(name, thisBike);
     }
 
 

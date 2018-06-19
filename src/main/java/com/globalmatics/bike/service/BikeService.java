@@ -2,7 +2,6 @@ package com.globalmatics.bike.service;
 
 import com.globalmatics.bike.models.Bike;
 import com.globalmatics.bike.repository.BikeRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,16 +30,26 @@ public class BikeService {
     }
 
     public void delete(String name) {
-        bikeRepository.findByName(name);
+
+        List<Bike> bikesToDelete = bikeRepository.findAllByName(name);
+
+        bikesToDelete.forEach(bike -> {
+            bikeRepository.delete(bike);
+        });
+
     }
 
 
 
-    public Bike update(String name, Bike thisBike) {
+    public Bike update(String name, Bike updatedBike) {
 
-        Bike findBike = bikeRepository.findByName(name);
-        BeanUtils.copyProperties(name, findBike);
+        Bike existingBike = bikeRepository.findByName(name);
 
-        return bikeRepository.saveAndFlush(thisBike);
+
+        updatedBike.setId(existingBike.getId());
+
+//        BeanUtils.copyProperties(name, existingBike);
+
+        return bikeRepository.save(updatedBike);
     }
 }

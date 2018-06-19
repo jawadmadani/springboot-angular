@@ -2,7 +2,6 @@ package com.globalmatics.bike.controllers;
 
 import com.globalmatics.bike.models.Bike;
 import com.globalmatics.bike.service.BikeService;
-import org.hibernate.sql.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,9 +62,9 @@ public class BikeController {
 
 
 //    API for updating an entity
-    @RequestMapping(path = "/update/{id}", method = RequestMethod.PUT)
+    @RequestMapping(path = "/update/{name}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public Bike update(@PathVariable("id") String name, @RequestBody Bike thisBike) {
+    public Bike update(@PathVariable("name") String name, @RequestBody Bike thisBike) {
 
         return bikeService.update(name, thisBike);
     }

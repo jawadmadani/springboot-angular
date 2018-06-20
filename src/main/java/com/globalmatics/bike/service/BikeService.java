@@ -16,21 +16,28 @@ public class BikeService {
     private BikeRepository bikeRepository;
 
     public List<Bike> fetchAll() {
-        return bikeRepository.findAll();
+
+        List<Bike> listOfBikes = bikeRepository.findAll();
+        log.info("List of bikes" + listOfBikes);
+
+        return listOfBikes;
     }
 
     public Bike persist(Bike thisBike) {
 
         Bike bike = bikeRepository.save(thisBike);
 
-//        return bikeRepository.findById(id).orElse(new Bike());
+        log.info("Bike just added" + bike);
 
         return bike;
-
     }
 
     public Bike fetch(Long id) {
-        return bikeRepository.findById(id).get();
+
+        Bike fetchedBike = bikeRepository.findById(id).get();
+        log.info("Fetched bike" + fetchedBike);
+
+        return fetchedBike;
     }
 
     public void delete(String name) {
@@ -38,13 +45,10 @@ public class BikeService {
         List<Bike> bikesToDelete = bikeRepository.findAllByName(name);
 
         bikesToDelete.forEach(bike ->
-            bikeRepository.delete(bike)
-        );
-
-
+            bikeRepository.delete(bike));
         log.info("bike(s) to be deleted" + bikesToDelete);
 
-//        or
+//        or alternatively
 //        bikesToDelete.forEach(bikeRepository::delete);
 
     }
@@ -54,10 +58,12 @@ public class BikeService {
     public Bike update(String name, Bike updatedBike) {
 
         Bike existingBike = bikeRepository.findByName(name);
-
+        log.info("Bike that will be updated" + existingBike);
 
         updatedBike.setId(existingBike.getId());
+        log.info("Updated bike" + updatedBike);
 
+//        or alternatively
 //        BeanUtils.copyProperties(name, existingBike);
 
         return bikeRepository.save(updatedBike);

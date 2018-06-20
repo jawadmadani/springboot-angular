@@ -93,7 +93,7 @@ public class BikeFunctionalTest {
 //        testing
         given().
                 contentType(ContentType.JSON).
-                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
         when().
                 delete(bikeUrl + "/" + name).
         then().
@@ -102,7 +102,40 @@ public class BikeFunctionalTest {
     }
 
 
-//    fields in Bike
+//    Update/Edit
+    @Test
+    public void testingToUpdateABike() {
+
+//    creating a bike and then extracting it's name so it can be updated.
+        String nameToUpdate =
+        given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                body(createBikeBode()).
+        when().
+                post(bikeUrl + "/create").
+        then().
+                extract().response().as(Bike.class).getName();
+
+
+//        testing
+        given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                body(updateTheBike()).
+        when().
+                put(bikeUrl + "/update/" + nameToUpdate).
+        then().
+                statusCode(200).
+        and().
+                body("name", equalTo("Bilal")).
+                body("purchasePrice", equalTo(2122));
+
+
+    }
+
+
+    //    fields in Bike
     private String createBikeBode() {
         return "{\n" +
                 "    \"id\": 1,\n" +
@@ -116,4 +149,21 @@ public class BikeFunctionalTest {
                 "    \"contact\": true\n" +
                 "}";
     }
+
+
+    private String updateTheBike() {
+        return "{\n" +
+                "  \"id\": 1,\n" +
+                "  \"name\": \"Bilal\",\n" +
+                "  \"email\": \"newa@gmail.com\",\n" +
+                "  \"phone\": \"234asdf5432\",\n" +
+                "  \"model\": \"afdf\",\n" +
+                "  \"serialNumber\": \"khasbf\",\n" +
+                "  \"purchasePrice\": 2122,\n" +
+                "  \"purchaseDate\": \"2017-09-12\",\n" +
+                "  \"contact\": true\n" +
+                "}";
+    }
+
+
 }

@@ -29,6 +29,7 @@ public class BikeFunctionalTest {
         bikeUrl = String.format("http://localhost:%s/api/v1/bikes", serverPort);
     }
 
+//    Create
     @Test
     public void testingToCreateABike() {
 
@@ -43,6 +44,8 @@ public class BikeFunctionalTest {
                 statusCode(201);
     }
 
+
+//    Fetch
      @Test
     public void testingToFetchABike() {
 
@@ -72,6 +75,7 @@ public class BikeFunctionalTest {
     }
 
 
+//    Delete
     @Test
     public void testingToDeleteBikes() {
 
@@ -98,6 +102,7 @@ public class BikeFunctionalTest {
     }
 
 
+//    fields in Bike
     private String createBikeBode() {
         return "{\n" +
                 "    \"id\": 1,\n" +

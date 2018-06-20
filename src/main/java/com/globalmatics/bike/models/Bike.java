@@ -24,6 +24,4 @@ public class Bike {
     private BigDecimal purchasePrice;
     private Date purchaseDate;
     private boolean contact;
-
-    private Bike() {}
 }

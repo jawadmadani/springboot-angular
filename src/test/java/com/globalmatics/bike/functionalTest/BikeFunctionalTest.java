@@ -32,6 +32,7 @@ public class BikeFunctionalTest {
     @Test
     public void testingToCreateABike() {
 
+//        creating a bike and testing it.
         given().
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
@@ -45,6 +46,7 @@ public class BikeFunctionalTest {
      @Test
     public void testingToFetchABike() {
 
+//        creating a bike and then extracting it's id.
         long id =
         given().
                 contentType(ContentType.JSON).
@@ -55,18 +57,43 @@ public class BikeFunctionalTest {
         then().
                 extract().response().as(Bike.class).getId();
 
-
-
-         given().
-                 contentType(ContentType.JSON).
-                 accept(ContentType.JSON).
-                 body(createBikeBode()).
+//        testing
+        given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                body(createBikeBode()).
         when().
-                 get(bikeUrl + "/" + id).
+                get(bikeUrl + "/" + id).
         then().
                 statusCode(200).
         and().
-                 body("name", equalTo("Jawad"));
+                body("name", equalTo("Jawad"));
+
+    }
+
+
+    @Test
+    public void testingToDeleteBikes() {
+
+//        creating a bike and then extracting it's name.
+        String name =
+        given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                body(createBikeBode()).
+        when().
+                post(bikeUrl + "/create").
+        then().
+                extract().response().as(Bike.class).getName();
+
+//        testing
+        given().
+                contentType(ContentType.JSON).
+                contentType(ContentType.JSON).
+        when().
+                delete(bikeUrl + "/" + name).
+        then().
+                statusCode(200);
 
     }
 

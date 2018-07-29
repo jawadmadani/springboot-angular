@@ -2,12 +2,14 @@ package com.globalmatics.bike.controllers;
 
 import com.globalmatics.bike.exceptions.BikeNotFoundException;
 import com.globalmatics.bike.models.Bike;
+import com.globalmatics.bike.models.ExceptionJSONInfo;
 import com.globalmatics.bike.service.BikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -35,15 +37,13 @@ public class BikeController {
 
 
     // API for getting a certain bike.
-    @GetMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Bike getCertain(@PathVariable("id") Long id) {
 
         Bike getBike = bikeService.fetch(id);
 
-        if(getBike == null)
-            throw new BikeNotFoundException("id- "+ id);
-
         return getBike;
+
     }
 
 
@@ -75,11 +75,17 @@ public class BikeController {
         return bikeService.update(name, thisBike);
     }
 
-//    @ExceptionHandler(BikeNotFoundException.class)
-//    private ResponseEntity<Bike> handleNotFoundException(){
-//
-//        return new ResponseEntity<Bike>("asdfsadf", mess);
-//    }
+
+    @ExceptionHandler(BikeNotFoundException.class)
+    private ResponseEntity<ExceptionJSONInfo> handleBikeNotFoundException(HttpServletRequest request, Exception ex){
+
+        ExceptionJSONInfo response = new ExceptionJSONInfo();
+        response.setUrl(request.getRequestURL().toString());
+        response.setMessage(ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
 
 
 }

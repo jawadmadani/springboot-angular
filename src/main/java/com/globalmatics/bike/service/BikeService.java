@@ -43,15 +43,16 @@ public class BikeService {
 
         try {
             fetchedBike = bikeRepository.findById(id).get();
+
+            return fetchedBike;
+
         } catch (BikeNotFoundException e) {
 
             log.error("ERROR: Bike not found:- {} ", e.getMessage(), e);
             throw new BikeNotFoundException(e.getMessage(), e);
         }
 
-        log.info("Fetched bike" + fetchedBike);
 
-        return fetchedBike;
     }
 
 

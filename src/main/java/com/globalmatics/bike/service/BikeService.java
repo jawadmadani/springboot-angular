@@ -1,16 +1,19 @@
 package com.globalmatics.bike.service;
 
+import com.globalmatics.bike.exceptions.BikeNotFoundException;
 import com.globalmatics.bike.models.Bike;
 import com.globalmatics.bike.repository.BikeRepository;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Slf4j
 public class BikeService {
+
+    private static final Logger log = LoggerFactory.getLogger(BikeService.class);
 
     @Autowired
     private BikeRepository bikeRepository;
@@ -32,13 +35,26 @@ public class BikeService {
         return bike;
     }
 
+
+
     public Bike fetch(Long id) {
 
-        Bike fetchedBike = bikeRepository.findById(id).get();
+        Bike fetchedBike = null;
+
+        try {
+            fetchedBike = bikeRepository.findById(id).get();
+        } catch (BikeNotFoundException e) {
+
+            log.error("ERROR: Bike not found:- {} ", e.getMessage(), e);
+            throw new BikeNotFoundException(e.getMessage(), e);
+        }
+
         log.info("Fetched bike" + fetchedBike);
 
         return fetchedBike;
     }
+
+
 
     public void delete(String name) {
 

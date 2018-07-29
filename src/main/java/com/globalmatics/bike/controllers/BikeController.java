@@ -1,5 +1,6 @@
 package com.globalmatics.bike.controllers;
 
+import com.globalmatics.bike.exceptions.BikeNotFoundException;
 import com.globalmatics.bike.models.Bike;
 import com.globalmatics.bike.service.BikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,12 @@ public class BikeController {
     @GetMapping("/{id}")
     public Bike getCertain(@PathVariable("id") Long id) {
 
-        return bikeService.fetch(id);
+        Bike getBike = bikeService.fetch(id);
+
+        if(getBike == null)
+            throw new BikeNotFoundException("id- "+ id);
+
+        return getBike;
     }
 
 
@@ -68,6 +74,12 @@ public class BikeController {
 
         return bikeService.update(name, thisBike);
     }
+
+//    @ExceptionHandler(BikeNotFoundException.class)
+//    private ResponseEntity<Bike> handleNotFoundException(){
+//
+//        return new ResponseEntity<Bike>("asdfsadf", mess);
+//    }
 
 
 }

@@ -13,8 +13,6 @@ import java.sql.Date;
 @Table(name = "Bike")
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Setter
-@Getter
 public class Bike {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

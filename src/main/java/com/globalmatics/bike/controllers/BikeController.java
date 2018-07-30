@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -38,14 +40,14 @@ public class BikeController {
 
     // API for getting a certain bike.
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Bike getCertain(@PathVariable("id") Long id) throws BikeNotFoundException {
+    public Bike getCertain(@PathVariable("id") Long id) {
 
         Bike getBike = null;
-        try {
+//        try {
             getBike = bikeService.fetch(id);
-        } catch (Exception e) {
-            throw new BikeNotFoundException("id-" + id);
-        }
+//        } catch (Exception e) {
+//            throw new BikeNotFoundException("id-" + id);
+//        }
 
         return getBike;
 
@@ -80,15 +82,14 @@ public class BikeController {
         return bikeService.update(name, thisBike);
     }
 
-//    // returning a custom object to the client
-//    @ExceptionHandler(BikeNotFoundException.class)
-//    private ResponseEntity<ExceptionJSONInfo> handleBikeNotFoundException(HttpServletRequest request, Exception ex){
-//
-//        ExceptionJSONInfo response = new ExceptionJSONInfo();
-//        response.setPath(request.getRequestURL().toString());
-//        response.setMessage(ex.getMessage());
-//
-//        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-//    }
+    // returning a custom object to the client
+    @ExceptionHandler(Exception.class)
+    private ResponseEntity<Object> handleBikeNotFoundException(WebRequest request, Exception ex) {
+
+        ExceptionJSONInfo response = new ExceptionJSONInfo(new Date(),
+                ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
 }

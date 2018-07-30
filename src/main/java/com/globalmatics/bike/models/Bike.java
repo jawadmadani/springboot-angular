@@ -27,6 +27,4 @@ public class Bike {
     private Date purchaseDate;
     private boolean contact;
 
-    private String message;
-    private String path;
 }

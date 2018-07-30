@@ -80,7 +80,7 @@ public class BikeController {
         return bikeService.update(name, thisBike);
     }
 
-//
+//    // returning a custom object to the client
 //    @ExceptionHandler(BikeNotFoundException.class)
 //    private ResponseEntity<ExceptionJSONInfo> handleBikeNotFoundException(HttpServletRequest request, Exception ex){
 //
@@ -88,9 +88,7 @@ public class BikeController {
 //        response.setPath(request.getRequestURL().toString());
 //        response.setMessage(ex.getMessage());
 //
-//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 //    }
-
-
 
 }

@@ -38,9 +38,14 @@ public class BikeController {
 
     // API for getting a certain bike.
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Bike getCertain(@PathVariable("id") Long id) {
+    public Bike getCertain(@PathVariable("id") Long id) throws BikeNotFoundException {
 
-        Bike getBike = bikeService.fetch(id);
+        Bike getBike = null;
+        try {
+            getBike = bikeService.fetch(id);
+        } catch (Exception e) {
+            throw new BikeNotFoundException("id-" + id);
+        }
 
         return getBike;
 
@@ -75,16 +80,16 @@ public class BikeController {
         return bikeService.update(name, thisBike);
     }
 
-
-    @ExceptionHandler(BikeNotFoundException.class)
-    private ResponseEntity<ExceptionJSONInfo> handleBikeNotFoundException(HttpServletRequest request, Exception ex){
-
-        ExceptionJSONInfo response = new ExceptionJSONInfo();
-        response.setUrl(request.getRequestURL().toString());
-        response.setMessage(ex.getMessage());
-
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+//
+//    @ExceptionHandler(BikeNotFoundException.class)
+//    private ResponseEntity<ExceptionJSONInfo> handleBikeNotFoundException(HttpServletRequest request, Exception ex){
+//
+//        ExceptionJSONInfo response = new ExceptionJSONInfo();
+//        response.setPath(request.getRequestURL().toString());
+//        response.setMessage(ex.getMessage());
+//
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//    }
 
 
 

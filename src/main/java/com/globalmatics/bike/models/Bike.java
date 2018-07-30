@@ -26,4 +26,7 @@ public class Bike {
     private BigDecimal purchasePrice;
     private Date purchaseDate;
     private boolean contact;
+
+    private String message;
+    private String path;
 }

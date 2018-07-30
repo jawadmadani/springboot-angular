@@ -37,21 +37,18 @@ public class BikeService {
 
 
 
-    public Bike fetch(Long id) {
-
-        Bike fetchedBike = null;
+    public Bike fetch(Long id) throws BikeNotFoundException {
 
         try {
-            fetchedBike = bikeRepository.findById(id).get();
+            Bike fetchedBike = bikeRepository.findById(id).get();
 
             return fetchedBike;
 
-        } catch (BikeNotFoundException e) {
+        } catch (Exception e) {
 
             log.error("ERROR: Bike not found:- {} ", e.getMessage(), e);
-            throw new BikeNotFoundException(e.getMessage(), e);
+            throw new BikeNotFoundException("id-" + id);
         }
-
 
     }
 

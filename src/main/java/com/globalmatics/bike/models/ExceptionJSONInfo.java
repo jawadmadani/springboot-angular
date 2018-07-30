@@ -7,7 +7,10 @@ import lombok.Setter;
 @Setter
 public class ExceptionJSONInfo {
 
-    private String url;
+    private String timestamp;
+    private int status;
+    private String error;
     private String message;
+    private String path;
 
 }

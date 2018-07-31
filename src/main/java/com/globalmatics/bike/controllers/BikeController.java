@@ -23,7 +23,7 @@ public class BikeController {
 
 
 
-    // API endpoints for getting the full list.
+    // API endpoint for getting the full list.
     @GetMapping("/all")
     public ResponseEntity<List<Bike>> bikeList() {
         List<Bike> listOfBikes = bikeService.fetchAll();
@@ -38,23 +38,23 @@ public class BikeController {
 
 
 
-    // API for getting a certain bike.
+    // API endpoint for getting a certain bike.
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Bike getCertain(@PathVariable("id") Long id) {
 
         Bike getBike = null;
-//        try {
+        try {
             getBike = bikeService.fetch(id);
-//        } catch (Exception e) {
-//            throw new BikeNotFoundException("id-" + id);
-//        }
+        } catch (Exception e) {
+            throw new BikeNotFoundException("id-" + id, e.getCause());
+        }
 
         return getBike;
 
     }
 
 
-    // API for adding a bike.
+    // API endpoint for adding a bike.
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Bike create(@RequestBody Bike thisBike) {
@@ -65,7 +65,7 @@ public class BikeController {
     }
 
 
-//    API for deleting a bike
+//    API endpoint for deleting a bike
     @RequestMapping(path = "/{name}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("name") String name) {
@@ -74,7 +74,7 @@ public class BikeController {
     }
 
 
-//    API for updating an entity
+//    API endpoint for updating an entity
     @RequestMapping(path = "/update/{name}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public Bike update(@PathVariable("name") String name, @RequestBody Bike thisBike) {
@@ -82,12 +82,23 @@ public class BikeController {
         return bikeService.update(name, thisBike);
     }
 
+
+
+
+
+
+
+
     // returning a custom object to the client
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(BikeNotFoundException.class)
     private ResponseEntity<Object> handleBikeNotFoundException(WebRequest request, Exception ex) {
 
-        ExceptionJSONInfo response = new ExceptionJSONInfo(new Date(),
-                ex.getMessage(), request.getDescription(false));
+        ExceptionJSONInfo response = new ExceptionJSONInfo();
+        response.setTimestamp(new Date());
+        response.setStatus(404);
+        response.setError(HttpStatus.NOT_FOUND);
+        response.setMessage(ex.getMessage());
+        response.setPath(request.getDescription(false));
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }

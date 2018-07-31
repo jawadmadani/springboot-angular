@@ -134,6 +134,20 @@ public class BikeFunctionalTest {
 
     }
 
+//    test for 404 not-found exception
+    @Test
+    public void testingToSeeTheException() {
+
+        given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                body(createBikeBode()).
+        when().
+                get(bikeUrl + "/" + 9832459).
+        then().
+                statusCode(404);
+    }
+
 
     //    fields in Bike
     private String createBikeBode() {
